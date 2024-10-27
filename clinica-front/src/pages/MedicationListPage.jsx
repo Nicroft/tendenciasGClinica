@@ -30,25 +30,26 @@ const MedicationListPage = () => {
     };
 
     const handleEdit = (id) => {
-        navigate(`/medications/${id}`);
+        navigate(`/medications/edit/${id}`);
     };
 
     const handleAdd = () => {
         navigate('/medications/new');
     };
 
-    const handleExportPDF = () => {
+    const exportToPDF = () => {
         const doc = new jsPDF();
-        doc.text('Medications List', 14, 16);
+        doc.text('Medications List', 14, 20);
+        const data = medications.map(medication => ({
+            Name: medication.name,
+            Description: medication.description,
+            Quantity: medication.quantity_available,
+            Cost: medication.cost,
+        }));
         doc.autoTable({
-            startY: 20,
             head: [['Name', 'Description', 'Quantity Available', 'Cost']],
-            body: medications.map(medication => [
-                medication.name,
-                medication.description,
-                medication.quantity_available,
-                medication.cost
-            ]),
+            body: data.map(item => [item.Name, item.Description, item.Quantity, item.Cost]),
+            startY: 30,
         });
         doc.save('medications_list.pdf');
     };
@@ -64,8 +65,8 @@ const MedicationListPage = () => {
                     Add New Medication
                 </button>
                 <button
-                    onClick={handleExportPDF}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    onClick={exportToPDF}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                     Export to PDF
                 </button>
