@@ -7,7 +7,11 @@ const usersApi = axios.create({
 // Obtener todos los doctores
 export const getAllDoctors = () => {
     return usersApi.get("/").then(response => {
-        // Filtrar los usuarios cuyo rol sea "Médico"
         return response.data.filter(user => user.role === "Médico");
     });
+};
+
+
+export const createUser = (userData) => {
+    return usersApi.post("/", userData);
 };
