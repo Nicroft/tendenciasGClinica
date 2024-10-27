@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllMedications, deleteMedication } from '../api/medications.api';
-import jsPDF from 'jspdf'; // Importa jsPDF
-import 'jspdf-autotable'; // Importa el plugin jsPDF AutoTable
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const MedicationListPage = () => {
     const [medications, setMedications] = useState([]);
