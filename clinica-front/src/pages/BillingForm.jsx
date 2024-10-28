@@ -15,20 +15,34 @@ const BillingForm = () => {
   });
 
   useEffect(() => {
-    if (id) {
-      const loadBilling = async () => {
-        const billing = await fetchBillings(id);
-        setFormData(billing);
-      };
-      loadBilling();
-    }
-
-    const fetchPatients = async () => {
-      const response = await fetch('http://127.0.0.1:8000/api/Patient/');
-      const data = await response.json();
-      setPatients(data);
+    const loadBilling = async () => {
+      if (id) {
+        try {
+          const billing = await fetchBillings(id); // Cargar factura específica
+          setFormData({
+            patient: billing.patient || '',
+            date: billing.date || '',
+            amount: billing.amount || '',
+            details: billing.details || '',
+            payment_status: billing.payment_status || 'Pendiente',
+          });
+        } catch (error) {
+          console.error('Error al cargar la factura:', error);
+        }
+      }
     };
 
+    const fetchPatients = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/Patient/');
+        const data = await response.json();
+        setPatients(data);
+      } catch (error) {
+        console.error('Error al obtener los pacientes:', error);
+      }
+    };
+
+    loadBilling();
     fetchPatients();
   }, [id]);
 
@@ -95,7 +109,6 @@ const BillingForm = () => {
           <input
             type="number"
             name="amount"
-            placeholder="Monto"
             value={formData.amount}
             onChange={handleChange}
             required
@@ -107,7 +120,6 @@ const BillingForm = () => {
           <label className="block text-gray-700">Detalles</label>
           <textarea
             name="details"
-            placeholder="Detalles"
             value={formData.details}
             onChange={handleChange}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"

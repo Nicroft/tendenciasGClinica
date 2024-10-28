@@ -1,8 +1,9 @@
-const API_URL = 'http://localhost:8000/api/Billing/'; 
+const API_URL = 'http://localhost:8000/api/Billing/';
 
-export const fetchBillings = async () => {
+export const fetchBillings = async (id = null) => {
   try {
-    const response = await fetch(API_URL);
+    const url = id ? `${API_URL}${id}/` : API_URL; 
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Error ${response.status}: No se pudo obtener las facturas.`);
     }
