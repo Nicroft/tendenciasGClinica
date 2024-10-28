@@ -9,6 +9,8 @@ import MedicationListPage from './pages/MedicationListPage';
 import AppointmentFormPage from './pages/AppointmentFormPage'; 
 import Navigation from './components/Navigation'; 
 import UserFormPage from './pages/UserFormPage';
+import MedicalRecordListPage from './pages/MedicalRecordListPage';
+import MedicalRecordFormPage from './pages/MedicalRecordFormPage'; 
 
 function App() {
   return (
@@ -30,6 +32,9 @@ function App() {
           <Route path="/medications/new" element={<MedicationInventoryFormPage />} />
           <Route path="/medications/edit/:id" element={<MedicationInventoryFormPage />} />
           <Route path="/users/new" element={<UserFormPage />} />
+          <Route path="/medical-records" element={<MedicalRecordListPage />} />
+          <Route path="/medical-records/new" element={<MedicalRecordFormPage />} />
+          <Route path="/medical-records/edit/:id" element={<MedicalRecordFormPage />} /> 
         </Routes>
       </div>
     </BrowserRouter>

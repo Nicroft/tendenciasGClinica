@@ -69,6 +69,22 @@ const Navigation = () => {
             Create User
           </Link>
         </li>
+        <li>
+          <Link
+            to="/medical-records/new"
+            className="inline-block px-4 py-2 text-white bg-purple-700 rounded hover:bg-purple-800 transition"
+          >
+            Create Medical Record
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/medical-records"
+            className="inline-block px-4 py-2 text-white bg-purple-700 rounded hover:bg-purple-800 transition"
+          >
+            Medical Records
+          </Link>
+        </li>
       </ul>
     </nav>
   );
