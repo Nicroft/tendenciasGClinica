@@ -37,6 +37,38 @@ const Navigation = () => {
             New Appointment
           </Link>
         </li>
+        <li>
+          <Link
+            to="/medications"
+            className="inline-block px-4 py-2 text-white bg-purple-700 rounded hover:bg-purple-800 transition"
+          >
+            Medication Inventory
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/billing"
+            className="inline-block px-4 py-2 text-white bg-purple-700 rounded hover:bg-purple-800 transition"
+          >
+            Billing
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/billing/new"
+            className="inline-block px-4 py-2 text-white bg-purple-700 rounded hover:bg-purple-800 transition"
+          >
+            Create Billing
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/users/new"
+            className="inline-block px-4 py-2 text-white bg-purple-700 rounded hover:bg-purple-800 transition"
+          >
+            Create User
+          </Link>
+        </li>
       </ul>
     </nav>
   );

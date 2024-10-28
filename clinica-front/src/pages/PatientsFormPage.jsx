@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { createPatient, updatePatient, getPatient, getAllPatients } from '../api/patients.api';
+import { createPatient, updatePatient, getPatient } from '../api/patients.api';
 import { useNavigate, useParams } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -12,32 +12,42 @@ export function PatientsFormPage() {
     const params = useParams();
 
     const onSubmit = handleSubmit(async data => {
-        if (params.id) {
-            await updatePatient(params.id, data);
-            alert(`Paciente ${data.full_name} actualizado exitosamente`);
-        } else {
-            await createPatient(data);
-            alert(`Paciente ${data.full_name} creado exitosamente`);
+        try {
+            if (params.id) {
+                await updatePatient(params.id, data);
+                alert(`Paciente ${data.full_name} actualizado exitosamente`);
+            } else {
+                await createPatient(data);
+                alert(`Paciente ${data.full_name} creado exitosamente`);
+            }
+            navigate('/patients');
+        } catch (error) {
+            console.error('Error saving patient:', error);
+            alert('Hubo un error al guardar el paciente. Por favor, inténtelo de nuevo.');
         }
-        navigate('/patients');
     });
 
     useEffect(() => {
         async function loadPatient() {
             if (params.id) {
-                const res = await getPatient(params.id);
-                setValue("full_name", res.data.full_name);
-                setValue("birth_date", res.data.birth_date);
-                setValue("gender", res.data.gender);
-                setValue("address", res.data.address);
-                setValue("phone_number", res.data.phone_number);
-                setValue("email", res.data.email);
-                setValue("emergency_contact_name", res.data.emergency_contact_name);
-                setValue("emergency_contact_phone", res.data.emergency_contact_phone);
-                setValue("insurance_company", res.data.insurance_company);
-                setValue("policy_number", res.data.policy_number);
-                setValue("policy_status", res.data.policy_status);
-                setValue("policy_expiry", res.data.policy_expiry);
+                try {
+                    const res = await getPatient(params.id);
+                    setValue("full_name", res.full_name);
+                    setValue("birth_date", res.birth_date);
+                    setValue("gender", res.gender);
+                    setValue("address", res.address);
+                    setValue("phone_number", res.phone_number);
+                    setValue("email", res.email);
+                    setValue("emergency_contact_name", res.emergency_contact_name);
+                    setValue("emergency_contact_phone", res.emergency_contact_phone);
+                    setValue("insurance_company", res.insurance_company);
+                    setValue("policy_number", res.policy_number);
+                    setValue("policy_status", res.policy_status);
+                    setValue("policy_expiry", res.policy_expiry);
+                } catch (error) {
+                    console.error('Error loading patient:', error);
+                    alert('Hubo un error al cargar los datos del paciente. Por favor, inténtelo de nuevo.');
+                }
             }
         }
         loadPatient();
@@ -101,7 +111,6 @@ export function PatientsFormPage() {
                         <option value="">Seleccione</option>
                         <option value="F">Femenino</option>
                         <option value="M">Masculino</option>
-                        <option value="O">Otro</option>
                     </select>
                     {errors.gender && <span className="text-red-500 text-sm">Este campo es requerido</span>}
                 </div>
@@ -124,6 +133,79 @@ export function PatientsFormPage() {
                         className="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                     />
                     {errors.phone_number && <span className="text-red-500 text-sm">Este campo es requerido</span>}
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                    <input
+                        type="email"
+                        {...register("email", { required: true })}
+                        className="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    />
+                    {errors.email && <span className="text-red-500 text-sm">Este campo es requerido</span>}
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Contacto de Emergencia</label>
+                    <input
+                        type="text"
+                        {...register("emergency_contact_name", { required: true })}
+                        className="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    />
+                    {errors.emergency_contact_name && <span className="text-red-500 text-sm">Este campo es requerido</span>}
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Teléfono de Emergencia</label>
+                    <input
+                        type="tel"
+                        {...register("emergency_contact_phone", { required: true })}
+                        className="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    />
+                    {errors.emergency_contact_phone && <span className="text-red-500 text-sm">Este campo es requerido</span>}
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Compañía de Seguro</label>
+                    <input
+                        type="text"
+                        {...register("insurance_company", { required: true })}
+                        className="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    />
+                    {errors.insurance_company && <span className="text-red-500 text-sm">Este campo es requerido</span>}
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Número de Póliza</label>
+                    <input
+                        type="text"
+                        {...register("policy_number", { required: true })}
+                        className="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    />
+                    {errors.policy_number && <span className="text-red-500 text-sm">Este campo es requerido</span>}
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Estado de Póliza</label>
+                    <select
+                        {...register("policy_status", { required: true })}
+                        className="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    >
+                        <option value="">Seleccione</option>
+                        <option value="Activa">Activa</option>
+                        <option value="Inactiva">Inactiva</option>
+                    </select>
+                    {errors.policy_status && <span className="text-red-500 text-sm">Este campo es requerido</span>}
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Expiración de Póliza</label>
+                    <input
+                        type="date"
+                        {...register("policy_expiry", { required: true })}
+                        className="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    />
+                    {errors.policy_expiry && <span className="text-red-500 text-sm">Este campo es requerido</span>}
                 </div>
 
                 <button

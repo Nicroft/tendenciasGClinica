@@ -1,37 +1,18 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createMedication, updateMedication, getMedication } from '../api/medications.api';
+import { getMedication, createMedication, updateMedication } from '../api/medications.api';
 
 const MedicationInventoryFormPage = () => {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm();
     const navigate = useNavigate();
-    const params = useParams();
-
-    const onSubmit = async (data) => {
-        const payload = {
-            ...data,
-            cost: parseFloat(data.cost),
-            quantity_available: parseInt(data.quantity_available) 
-        };
-
-        try {
-            if (params.id) {
-                await updateMedication(params.id, payload);
-            } else {
-                await createMedication(payload);
-            }
-            navigate('/medications');
-        } catch (error) {
-            console.error("Error saving medication:", error);
-        }
-    };
+    const { id } = useParams();
 
     useEffect(() => {
-        const loadMedication = async () => {
-            if (params.id) {
+        if (id) {
+            const loadMedication = async () => {
                 try {
-                    const res = await getMedication(params.id);
+                    const res = await getMedication(id);
                     setValue("name", res.data.name);
                     setValue("description", res.data.description);
                     setValue("quantity_available", res.data.quantity_available);
@@ -39,14 +20,27 @@ const MedicationInventoryFormPage = () => {
                 } catch (error) {
                     console.error("Error loading medication:", error);
                 }
+            };
+            loadMedication();
+        }
+    }, [id, setValue]);
+
+    const onSubmit = async (data) => {
+        try {
+            if (id) {
+                await updateMedication(id, data);
+            } else {
+                await createMedication(data);
             }
-        };
-        loadMedication();
-    }, [params.id, setValue]);
+            navigate('/medications');
+        } catch (error) {
+            console.error("Error saving medication:", error);
+        }
+    };
 
     return (
         <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-6">{params.id ? 'Edit Medication' : 'Add Medication'}</h2>
+            <h2 className="text-2xl font-bold mb-6">{id ? 'Edit Medication' : 'Add Medication'}</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name:</label>
