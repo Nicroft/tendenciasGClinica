@@ -4,12 +4,12 @@ const usersApi = axios.create({
     baseURL: 'http://localhost:8000/api/User/'
 });
 
-// Obtener todos los doctores
+
 export const getAllDoctors = async () => {
     try {
         const response = await usersApi.get("/");
-        console.log(response.data); // Verificar la respuesta
-        // Si la respuesta es un arreglo de doctores, simplemente la retornamos
+        console.log(response.data); 
+
         if (Array.isArray(response.data)) {
             return response.data;
         } else {

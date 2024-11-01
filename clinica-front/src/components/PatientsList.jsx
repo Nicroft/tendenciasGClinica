@@ -27,7 +27,7 @@ export function PatientsList() {
                 placeholder="Buscar por nombre..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                style={{ marginBottom: '10px', padding: '5px', width: '100%' }} // Estilo opcional
+                style={{ marginBottom: '10px', padding: '5px', width: '100%' }} 
             />
 
 
