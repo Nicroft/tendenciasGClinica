@@ -92,16 +92,7 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'TestDB',
-#         'USER': 'postgres',
-#         'PASSWORD': 'laurayjuana12',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
+
 
 
 # Password validation
